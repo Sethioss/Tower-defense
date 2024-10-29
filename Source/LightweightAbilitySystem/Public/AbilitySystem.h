@@ -7,7 +7,7 @@
 #include "LightWeightAbilitySystemCore.h"
 #include "AbilitySystem.generated.h"
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class LIGHTWEIGHTABILITYSYSTEM_API UAbilitySystem : public UActorComponent
 {
 	GENERATED_BODY()
