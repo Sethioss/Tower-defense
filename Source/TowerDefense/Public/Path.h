@@ -16,7 +16,7 @@ public:
 	APath();
 
 	UPROPERTY(EditAnywhere)
-	class USplineComponent* Path = nullptr;
+	TObjectPtr<class USplineComponent> Path = nullptr;
 
 protected:
 	// Called when the game starts or when spawned

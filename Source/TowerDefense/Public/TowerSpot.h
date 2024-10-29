@@ -16,7 +16,7 @@ public:
 	ATowerSpot();
 
 	UPROPERTY(EditInstanceOnly)
-	class UStaticMeshComponent* SpotMesh = nullptr;
+	TObjectPtr<UStaticMeshComponent> SpotMesh = nullptr;
 
 	//UPROPERTY(VisibleAnywhere)
 	//Future tower class

@@ -13,6 +13,16 @@ UHealthComponent::UHealthComponent()
 	// ...
 }
 
+//Also handles health removal
+void UHealthComponent::AddHealth(int Value)
+{
+	Health += Value;
+}
+
+bool UHealthComponent::IsDead()
+{
+	return Health <= 0;
+}
 
 // Called when the game starts
 void UHealthComponent::BeginPlay()

@@ -19,6 +19,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	inline int GetHealth() { return Health; }
 
+	UFUNCTION(BlueprintCallable)
+	void AddHealth(int Value);
+
+	UFUNCTION(BlueprintCallable)
+	bool IsDead();
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

@@ -16,10 +16,10 @@ public:
 	AHealthCore();
 
 	UPROPERTY(VisibleAnywhere)
-	class UHealthComponent* HealthComp = nullptr;
+	TObjectPtr<class UHealthComponent> HealthComp = nullptr;
 
 	UPROPERTY(EditInstanceOnly)
-	class UStaticMeshComponent* Mesh = nullptr;
+	TObjectPtr<class UStaticMeshComponent> Mesh = nullptr;
 
 protected:
 	// Called when the game starts or when spawned
