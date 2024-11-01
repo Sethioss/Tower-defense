@@ -16,14 +16,25 @@ public:
 	ATowerSpot();
 
 	UPROPERTY(EditInstanceOnly)
-	TObjectPtr<UStaticMeshComponent> SpotMesh = nullptr;
+	TObjectPtr<class UStaticMeshComponent> SpotMesh = nullptr;
 
-	//UPROPERTY(VisibleAnywhere)
-	//Future tower class
+	UPROPERTY(EditInstanceOnly)
+	TObjectPtr<class UBoxComponent> BoxComp = nullptr;
+
+	UPROPERTY(EditInstanceOnly)
+	TObjectPtr<USceneComponent> TowerSpawnPoint = nullptr;
+
+	UPROPERTY(VisibleAnywhere, Transient)
+	TObjectPtr<class ATower> Tower = nullptr;
+
+	UFUNCTION()
+	void FillSpotWithTower(TSubclassOf<class ATower> InTower);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	inline virtual bool IsTowerSlotFilled() { return Tower != nullptr; }
 
 public:	
 	// Called every frame
