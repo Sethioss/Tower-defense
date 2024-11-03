@@ -14,9 +14,10 @@ UHealthComponent::UHealthComponent()
 }
 
 //Also handles health removal
-void UHealthComponent::AddHealth(int Value)
+bool UHealthComponent::AddHealth(int Value)
 {
 	Health += Value;
+	return IsDead();
 }
 
 bool UHealthComponent::IsDead()
@@ -29,8 +30,7 @@ void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	Health = MaxHealth;	
 }
 
 

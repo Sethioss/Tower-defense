@@ -15,6 +15,7 @@ class TOWERDEFENSE_API AATDPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	TObjectPtr<class UInputMappingContext> MappingContext;
 
@@ -23,7 +24,7 @@ public:
 	TObjectPtr<class UInputAction> ClickAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Tests)
-	TSubclassOf<class ATower> TestTower;
+	TSubclassOf<class ATower> SelectedTower;
 
 	virtual void BeginPlay() override;
 	

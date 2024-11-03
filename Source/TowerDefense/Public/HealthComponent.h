@@ -20,7 +20,7 @@ public:
 	inline int GetHealth() { return Health; }
 
 	UFUNCTION(BlueprintCallable)
-	void AddHealth(int Value);
+	bool AddHealth(int Value);
 
 	UFUNCTION(BlueprintCallable)
 	bool IsDead();
@@ -29,8 +29,11 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 	int Health;
+
+	UPROPERTY(EditAnywhere)
+	int MaxHealth;
 
 public:	
 	// Called every frame

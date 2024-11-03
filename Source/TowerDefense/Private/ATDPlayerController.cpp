@@ -51,8 +51,7 @@ void AATDPlayerController::HandleClick()
 		if(TowerSpot)
 		{
 			UE_LOG(LogTemp, Log, TEXT("I hit a tower spot!"));
-			TowerSpot->FillSpotWithTower(TestTower);
-			//Show Tower buying UI
+			TowerSpot->FillSpotWithTower(SelectedTower);
 		}
 	}
 }
