@@ -7,7 +7,7 @@
 #include "TowerSpot.generated.h"
 
 UCLASS()
-class TOWERDEFENSE_API ATowerSpot : public AActor
+class TOWERSYSTEM_API ATowerSpot : public AActor
 {
 	GENERATED_BODY()
 	

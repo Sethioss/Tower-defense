@@ -2,15 +2,13 @@
 
 using UnrealBuildTool;
 
-public class TowerDefense : ModuleRules
+public class TowerSystem : ModuleRules
 {
-	public TowerDefense(ReadOnlyTargetRules Target) : base(Target)
+	public TowerSystem(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "LightweightAbilitySystem", "TowerSystem", "Slate", "SlateCore" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+        PrivateDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

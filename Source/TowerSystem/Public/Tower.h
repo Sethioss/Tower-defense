@@ -7,7 +7,7 @@
 #include "Tower.generated.h"
 
 UCLASS(Blueprintable, BlueprintType)
-class TOWERDEFENSE_API ATower : public AActor
+class TOWERSYSTEM_API ATower : public AActor
 {
 	GENERATED_BODY()
 	

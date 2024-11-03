@@ -4,8 +4,8 @@
 #include "ATDPlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "TowerSpot.h"
-#include "Tower.h"
+#include "TowerSystem/Public/TowerSpot.h"
+#include "TowerSystem/Public/Tower.h"
 #include "DrawDebugHelpers.h"
 
 void AATDPlayerController::BeginPlay()
@@ -48,7 +48,7 @@ void AATDPlayerController::HandleClick()
 	if (HitResult.bBlockingHit)
 	{
 		ATowerSpot* TowerSpot = Cast<ATowerSpot>(HitResult.GetActor());
-		if(TowerSpot)
+		if(TowerSpot && SelectedTower != nullptr)
 		{
 			UE_LOG(LogTemp, Log, TEXT("I hit a tower spot!"));
 			TowerSpot->FillSpotWithTower(SelectedTower);
