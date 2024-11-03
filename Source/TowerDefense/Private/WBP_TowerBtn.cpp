@@ -41,12 +41,27 @@ void UWBP_TowerBtn::UpdateButtonImage()
 {
     if (ButtonTexture)
     {
-        WidgetStyle.Normal.SetResourceObject(ButtonTexture);
-        WidgetStyle.Normal.SetImageSize(ImageSize);
-        WidgetStyle.Hovered.SetResourceObject(ButtonTexture);
-        WidgetStyle.Hovered.SetImageSize(ImageSize);
-        WidgetStyle.Pressed.SetResourceObject(ButtonTexture);
-        WidgetStyle.Pressed.SetImageSize(ImageSize);
+        FButtonStyle Style;
+        FSlateBrush Brush;
+
+        
+        Brush.SetResourceObject(ButtonTexture);
+        Brush.SetImageSize(ImageSize);
+        Brush.DrawAs = ESlateBrushDrawType::RoundedBox;
+
+        //Normal
+        Brush.TintColor = FLinearColor(1.0f, 1.0f, 1.0f);
+        Style.SetNormal(Brush);
+
+        //Hovered
+        Brush.TintColor = FLinearColor(0.7f, 0.7f, 0.7f);
+        Style.SetHovered(Brush);
+
+        //Pressed
+        Brush.TintColor = FLinearColor(0.4f, 0.4f, 0.4f);
+        Style.SetPressed(Brush);
+
+        SetStyle(Style);
     }
 }
 
