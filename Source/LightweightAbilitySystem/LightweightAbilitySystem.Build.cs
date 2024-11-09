@@ -6,7 +6,7 @@ public class LightweightAbilitySystem : ModuleRules
     public LightweightAbilitySystem(ReadOnlyTargetRules Target) : base(Target)
     {
 
-        PrivateDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine"});
+        PrivateDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "TowerSystem", "TowerDefense"});
 
     }
 

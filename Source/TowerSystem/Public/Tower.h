@@ -15,18 +15,8 @@ public:
 	// Sets default values for this actor's properties
 	ATower();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int BuyPrice = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int Upgradeprice = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int Level = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float AtkPower = 0.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float AtkRate = 0.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float AoeSize = 0.0f;
+	UFUNCTION()
+	inline UTowerAbilitySystem* GetAbilitySystem() { return AbilitySystem; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -35,8 +25,22 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class UStaticMeshComponent> MeshComp;
 
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<class UTowerAbilitySystem> AbilitySystem;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class UAbility> ShootingAbility;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class UAbility> EnemyCheckAbility;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void Init();
+
+private:
+	FTimerHandle CheckForEnemiesHandle;
 
 };

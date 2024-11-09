@@ -3,6 +3,8 @@
 
 #include "Tower.h"
 #include "Components/StaticMeshComponent.h"
+#include "LightweightAbilitySystem/Public/TowerAbilitySystem.h"
+#include "LightweightAbilitySystem/Public/Ability.h"
 
 // Sets default values
 ATower::ATower()
@@ -11,6 +13,8 @@ ATower::ATower()
 	PrimaryActorTick.bCanEverTick = true;
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+
+	AbilitySystem = CreateDefaultSubobject<UTowerAbilitySystem>(TEXT("TowerAbilitySystem"));
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshRef(TEXT("StaticMesh'/Engine/BasicShapes/Cube.Cube'"));
@@ -34,6 +38,18 @@ void ATower::BeginPlay()
 void ATower::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
+
+void ATower::Init()
+{
+	if (AbilitySystem)
+	{
+		if (EnemyCheckAbility)
+		{
+			AActor* TowerActor = this;
+			EnemyCheckAbility.GetDefaultObject()->TriggerAbility(TowerActor);
+		}
+	}
+}
+
 

@@ -8,7 +8,7 @@ public class TowerSystem : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PrivateDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine" });
+        PrivateDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "LightWeightAbilitySystem" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

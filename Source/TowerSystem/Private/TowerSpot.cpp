@@ -45,6 +45,7 @@ void ATowerSpot::FillSpotWithTower(TSubclassOf<ATower> InTower)
 		{
 			UE_LOG(LogTemp, Log, TEXT("TowerSlot: I spawned a %s"), *SpawnedTower.GetName());
 			Tower = SpawnedTower;
+			Tower->Init();
 		}
 	}
 
