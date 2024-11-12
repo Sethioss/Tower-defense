@@ -31,6 +31,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UAbility> HitAbility;
 
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<class UAbilitySystem> AbilitySystem;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

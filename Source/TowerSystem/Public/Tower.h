@@ -15,9 +15,6 @@ public:
 	// Sets default values for this actor's properties
 	ATower();
 
-	UFUNCTION()
-	inline UTowerAbilitySystem* GetAbilitySystem() { return AbilitySystem; }
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -26,7 +23,7 @@ protected:
 	TObjectPtr<class UStaticMeshComponent> MeshComp;
 
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<class UTowerAbilitySystem> AbilitySystem;
+	TObjectPtr<class UAbilitySystem> AbilitySystem;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class UAbility> ShootingAbility;

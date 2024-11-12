@@ -7,21 +7,28 @@
 #include "TowerSystem/Public/Tower.h"
 #include "AbilityDebuggerActor.h"
 
-void UCheckForSurroundingEnemies::TriggerAbility(AActor* Instigator)
+void UCheckForSurroundingEnemies::TriggerAbility(AActor* Instigator, TArray<float> RelevantStats)
 {
-	Super::TriggerAbility(Instigator);
+	Super::TriggerAbility(Instigator, RelevantStats);
 	OnAbilityTrigger();
 
 	ATower* Tower = Cast<ATower>(Instigator);
 
 	if (Tower)
 	{
-		UTowerAbilitySystem* As = Tower->GetAbilitySystem();
 		FVector Pos = Instigator->GetActorLocation();
 
 		if (AAbilityDebuggerActor::GetInstance())
 		{
-			AAbilityDebuggerActor::GetInstance()->DebugSphere(Pos, As->GetStats().AoeSize);
+			if (RelevantStats.Num() > 0)
+			{
+				AAbilityDebuggerActor::GetInstance()->DebugSphere(Pos, RelevantStats[0]);
+			}
+			else
+			{
+				UE_LOG(AbilitySystemError, Error, TEXT("There was an issue with the sent relevant stats. Please make sure that the array is correctly set / used."));
+
+			}
 		}
 		else
 		{

@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "LightWeightAbilitySystemCore.h"
-#include "TowerAbilitySystem.h"
 #include "Ability.generated.h"
 
 /**
@@ -23,7 +22,7 @@ public:
 	int Cost = 0;
 
 	UFUNCTION()
-	virtual void TriggerAbility(AActor* Instigator);
+	virtual void TriggerAbility(AActor* Instigator, TArray<float> RelevantStats = TArray<float>());
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnAbilityTrigger();

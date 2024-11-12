@@ -3,7 +3,7 @@
 
 #include "Tower.h"
 #include "Components/StaticMeshComponent.h"
-#include "LightweightAbilitySystem/Public/TowerAbilitySystem.h"
+#include "LightweightAbilitySystem/Public/AbilitySystem.h"
 #include "LightweightAbilitySystem/Public/Ability.h"
 
 // Sets default values
@@ -14,7 +14,7 @@ ATower::ATower()
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
-	AbilitySystem = CreateDefaultSubobject<UTowerAbilitySystem>(TEXT("TowerAbilitySystem"));
+	AbilitySystem = CreateDefaultSubobject<UAbilitySystem>(TEXT("AbilitySystem"));
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshRef(TEXT("StaticMesh'/Engine/BasicShapes/Cube.Cube'"));
@@ -44,10 +44,19 @@ void ATower::Init()
 {
 	if (AbilitySystem)
 	{
+		AbilitySystem->PassDefaultStatSetsToEffectiveStatSets();
+
 		if (EnemyCheckAbility)
 		{
 			AActor* TowerActor = this;
-			AbilitySystem->TriggerAbility(EnemyCheckAbility.GetDefaultObject(), this, ATower::StaticClass());
+			TArray<float> RelevantStats = TArray<float>();
+			float AoeStat = -1.0f;
+			if (AbilitySystem->GetStatFromName("AoeSize", AoeStat))
+			{
+				RelevantStats.Add(AoeStat);
+			}
+
+			AbilitySystem->TriggerAbility(EnemyCheckAbility.GetDefaultObject(), this, RelevantStats);
 		}
 	}
 }

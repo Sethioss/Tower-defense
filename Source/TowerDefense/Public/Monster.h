@@ -15,9 +15,6 @@ public:
 	// Sets default values for this actor's properties
 	AMonster();
 
-	UFUNCTION()
-	inline UMonsterAbilitySystem* GetAbilitySystem() { return AbilitySystem; }
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<class UHealthComponent> HealthComp = nullptr;
 
@@ -38,7 +35,7 @@ protected:
 	TObjectPtr<class UStaticMeshComponent> MeshComp;
 
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<class UMonsterAbilitySystem> AbilitySystem;
+	TObjectPtr<class UAbilitySystem> AbilitySystem;
 
 public:	
 	// Called every frame

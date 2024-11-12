@@ -3,7 +3,7 @@
 
 #include "Ability.h"
 
-void UAbility::TriggerAbility(AActor* Instigator)
+void UAbility::TriggerAbility(AActor* Instigator, TArray<float> RelevantStats)
 {
 	OnAbilityTrigger();
 	UE_LOG(AbilitySystemLog, Log, TEXT("Launching %s ability!"), *GetName());

@@ -3,7 +3,7 @@
 
 #include "Monster.h"
 #include "LightweightAbilitySystem/Public/Ability.h"
-#include "LightweightAbilitySystem/Public/MonsterAbilitySystem.h"
+#include "LightweightAbilitySystem/Public/AbilitySystem.h"
 #include "Components/StaticMeshComponent.h"
 #include "HealthComponent.h"
 
@@ -15,7 +15,8 @@ AMonster::AMonster()
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
-	AbilitySystem = CreateDefaultSubobject<UMonsterAbilitySystem>(TEXT("TowerAbilitySystem"));
+	AbilitySystem = CreateDefaultSubobject<UAbilitySystem>(TEXT("AbilitySystem"));
+
 	HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));

@@ -15,5 +15,5 @@ class LIGHTWEIGHTABILITYSYSTEM_API UCheckForSurroundingEnemies : public UAbility
 	GENERATED_BODY()
 
 public:
-	virtual void TriggerAbility(AActor* Instigator) override;
+	virtual void TriggerAbility(AActor* Instigator, TArray<float> RelevantStats = TArray<float>()) override;
 };

@@ -12,9 +12,15 @@ class LIGHTWEIGHTABILITYSYSTEM_API UAbilitySystem : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	UAbilitySystem();
+
+	UPROPERTY(EditAnywhere)
+	TArray<TSubclassOf<class UAbilityStatSet>> StatSets;
+
+	UPROPERTY()
+	TArray<class UAbilityStatSet*> EffectiveSets;
 
 protected:
 	// Called when the game starts
@@ -24,7 +30,17 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	virtual void TriggerAbility(TObjectPtr<class UAbility> AbilityToLaunch, TObjectPtr<AActor> Instigator, TObjectPtr<UClass> InstigatorClassType = nullptr);
+	UFUNCTION(BlueprintCallable)
+	virtual void TriggerAbility(class UAbility* AbilityToLaunch, AActor* Instigator, TArray<float> RelevantStats);
+
+	UFUNCTION()
+	virtual void PassDefaultStatSetsToEffectiveStatSets();
+
+	UFUNCTION(BlueprintCallable)
+	virtual bool GetStatFromName(FName StatName, float& OutValue);
+
+	UFUNCTION(BlueprintCallable)
+	virtual bool GetStatSetFromName(FName StatSetName, class UAbilityStatSet* OutValue);
 
 		
 };
