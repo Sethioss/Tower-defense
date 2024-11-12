@@ -35,9 +35,14 @@ class LIGHTWEIGHTABILITYSYSTEM_API UTowerAbilitySystem : public UAbilitySystem
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilitySystem")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilitySystemStats")
 	FTowerAbilityStats Stats;
+
+	TObjectPtr<class ATower> SystemOwner = nullptr;
 
 	UFUNCTION(BlueprintCallable)
 	inline FTowerAbilityStats GetStats() { return Stats; }
+
+protected:
+	virtual void BeginPlay() override;
 };

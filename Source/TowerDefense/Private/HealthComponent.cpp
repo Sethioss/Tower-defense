@@ -30,9 +30,8 @@ void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Health = MaxHealth;	
+	Health = MaxHealth;
 }
-
 
 // Called every frame
 void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

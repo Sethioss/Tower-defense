@@ -1,20 +1,22 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Tower.h"
-#include "Components/StaticMeshComponent.h"
-#include "LightweightAbilitySystem/Public/TowerAbilitySystem.h"
+#include "Monster.h"
 #include "LightweightAbilitySystem/Public/Ability.h"
+#include "LightweightAbilitySystem/Public/MonsterAbilitySystem.h"
+#include "Components/StaticMeshComponent.h"
+#include "HealthComponent.h"
 
 // Sets default values
-ATower::ATower()
+AMonster::AMonster()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
-	AbilitySystem = CreateDefaultSubobject<UTowerAbilitySystem>(TEXT("TowerAbilitySystem"));
+	AbilitySystem = CreateDefaultSubobject<UMonsterAbilitySystem>(TEXT("TowerAbilitySystem"));
+	HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshRef(TEXT("StaticMesh'/Engine/BasicShapes/Cube.Cube'"));
@@ -28,28 +30,16 @@ ATower::ATower()
 }
 
 // Called when the game starts or when spawned
-void ATower::BeginPlay()
+void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void ATower::Tick(float DeltaTime)
+void AMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-}
 
-void ATower::Init()
-{
-	if (AbilitySystem)
-	{
-		if (EnemyCheckAbility)
-		{
-			AActor* TowerActor = this;
-			AbilitySystem->TriggerAbility(EnemyCheckAbility.GetDefaultObject(), this, ATower::StaticClass());
-		}
-	}
 }
-
 

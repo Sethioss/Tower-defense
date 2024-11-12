@@ -2,6 +2,7 @@
 
 
 #include "AbilitySystem.h"
+#include "Ability.h"
 
 DEFINE_LOG_CATEGORY(AbilitySystemLog);
 DEFINE_LOG_CATEGORY(AbilitySystemWarning);
@@ -37,5 +38,10 @@ void UAbilitySystem::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UAbilitySystem::TriggerAbility(TObjectPtr<UAbility> AbilityToLaunch, TObjectPtr<AActor> Instigator, TObjectPtr<UClass> InstigatorClassType)
+{
+	AbilityToLaunch.Get()->TriggerAbility(Instigator);
 }
 

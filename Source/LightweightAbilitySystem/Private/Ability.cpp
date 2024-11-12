@@ -5,5 +5,6 @@
 
 void UAbility::TriggerAbility(AActor* Instigator)
 {
-	UE_LOG(AbilitySystemLog, Log, TEXT("Launching %s abilitiy!"), *GetName());
+	OnAbilityTrigger();
+	UE_LOG(AbilitySystemLog, Log, TEXT("Launching %s ability!"), *GetName());
 }

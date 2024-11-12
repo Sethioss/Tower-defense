@@ -4,26 +4,33 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "HealthCore.generated.h"
+#include "TowerProjectile.generated.h"
 
 UCLASS()
-class TOWERDEFENSE_API AHealthCore : public AActor
+class TOWERSYSTEM_API ATowerProjectile : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AHealthCore();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<class UHealthComponent> HealthComp = nullptr;
-
-	UPROPERTY(EditInstanceOnly)
-	TObjectPtr<class UStaticMeshComponent> Mesh = nullptr;
+	ATowerProjectile();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<class UStaticMeshComponent> MeshComp;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UAbility> SpawnAbility;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UAbility> TraversalAbility;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UAbility> HitAbility;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
