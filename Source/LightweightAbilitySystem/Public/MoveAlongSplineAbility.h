@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "Ability.h"
-#include "CheckForSurroundingEnemies.generated.h"
+#include "MoveAlongSplineAbility.generated.h"
 
 /**
  * 
  */
-UCLASS()
-class LIGHTWEIGHTABILITYSYSTEM_API UCheckForSurroundingEnemies : public UAbility
+UCLASS(Blueprintable, BlueprintType)
+class LIGHTWEIGHTABILITYSYSTEM_API UMoveAlongSplineAbility : public UAbility
 {
 	GENERATED_BODY()
 
-public:
 	virtual void TriggerAbility(AActor* Instigator, TArray<float>& RelevantStats) override;
+	
 };

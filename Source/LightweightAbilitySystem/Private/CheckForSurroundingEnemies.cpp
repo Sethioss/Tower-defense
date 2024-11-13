@@ -7,7 +7,7 @@
 #include "TowerSystem/Public/Tower.h"
 #include "AbilityDebuggerActor.h"
 
-void UCheckForSurroundingEnemies::TriggerAbility(AActor* Instigator, TArray<float> RelevantStats)
+void UCheckForSurroundingEnemies::TriggerAbility(AActor* Instigator, TArray<float>& RelevantStats)
 {
 	Super::TriggerAbility(Instigator, RelevantStats);
 	OnAbilityTrigger();

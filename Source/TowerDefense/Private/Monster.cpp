@@ -5,7 +5,12 @@
 #include "LightweightAbilitySystem/Public/Ability.h"
 #include "LightweightAbilitySystem/Public/AbilitySystem.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/SplineComponent.h"
 #include "HealthComponent.h"
+#include "Path.h"
+#include "LevelElementsManagerSubsystem.h"
+
+UE_DISABLE_OPTIMIZATION
 
 // Sets default values
 AMonster::AMonster()
@@ -34,7 +39,92 @@ AMonster::AMonster()
 void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AbilitySystem->PassDefaultStatSetsToEffectiveStatSets();
+
+	SETATTRIBUTE(AdvancementOnSpline, 0);
+
+	LevelElementsManagerCache = ULevelElementsManagerSubsystem::Get(GetWorld());
+	LevelElementsManagerCache->FindPathActor();
+
+	if (LevelElementsManagerCache)
+	{
+		if (LevelElementsManagerCache->PathActor)
+		{
+			SetPositionOnLvlPath(LevelElementsManagerCache->PathActor->Path, 0.0f);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Couldn't do initial SetPosition cause LvlPath is null"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Couldn't do initial SetPosition cause LevelElementsManagerCache is null"));
+	}
 	
+}
+
+void AMonster::Walk()
+{
+	WalkingRelevantStats.Empty();
+
+	float SpeedStat = 0.0f;
+	if (AbilitySystem->SetStatFromName("Speed", SpeedStat))
+	{
+		WalkingRelevantStats.Add(SpeedStat);
+	}
+
+	float AdvancementOnSpline = 0.0f;
+	if (AbilitySystem->SetStatFromName("AdvancementOnSpline", AdvancementOnSpline))
+	{
+		WalkingRelevantStats.Add(AdvancementOnSpline);
+	}
+
+	AbilitySystem->TriggerAbility(WalkingAbility.GetDefaultObject(), this, WalkingRelevantStats);
+
+	SETATTRIBUTE(AdvancementOnSpline, WalkingRelevantStats[1]);
+
+	if (LevelElementsManagerCache)
+	{
+		USplineComponent* LevelPath = LevelElementsManagerCache->PathActor->Path;
+
+		if (LevelPath)
+		{
+			SetPositionOnLvlPath(LevelPath);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("LevelElementsManager instance doesn't have a valid LevelPath property. Aborting monster walking operation"));
+
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("LevelElementsManager instance wasn't found, please make sure there is always one in the scene. Aborting monster walking operation"));
+	}
+
+
+}
+
+void AMonster::SetPositionOnLvlPath(TObjectPtr<USplineComponent> LevelPath, float ProgressionOverride)
+{
+
+	float Advancement = GETATTRIBUTE(AdvancementOnSpline);
+
+	FVector NewLocation = LevelPath->GetLocationAtDistanceAlongSpline(
+		ProgressionOverride = -1.0f ? Advancement : ProgressionOverride,
+		ESplineCoordinateSpace::World
+	);
+
+	// Optional: Get rotation to face along spline
+	FRotator NewRotation = LevelPath->GetRotationAtDistanceAlongSpline(
+		ProgressionOverride = -1.0f ? Advancement : ProgressionOverride,
+		ESplineCoordinateSpace::World
+	);
+
+	SetActorLocation(NewLocation);
+	SetActorRotation(NewRotation);
 }
 
 // Called every frame
@@ -42,5 +132,6 @@ void AMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	Walk();
 }
 

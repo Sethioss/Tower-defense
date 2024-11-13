@@ -22,7 +22,7 @@ public:
 	int Cost = 0;
 
 	UFUNCTION()
-	virtual void TriggerAbility(AActor* Instigator, TArray<float> RelevantStats = TArray<float>());
+	virtual void TriggerAbility(AActor* Instigator, TArray<float>& RelevantStats);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnAbilityTrigger();

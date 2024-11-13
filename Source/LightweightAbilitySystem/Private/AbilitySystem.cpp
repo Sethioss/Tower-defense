@@ -25,7 +25,7 @@ void UAbilitySystem::BeginPlay()
 {
 	Super::BeginPlay();
 	// ...
-	
+
 }
 
 
@@ -37,7 +37,7 @@ void UAbilitySystem::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	// ...
 }
 
-void UAbilitySystem::TriggerAbility(UAbility* AbilityToLaunch, AActor* Instigator, TArray<float> RelevantStats)
+void UAbilitySystem::TriggerAbility(UAbility* AbilityToLaunch, AActor* Instigator, TArray<float>& RelevantStats)
 {
 	AbilityToLaunch->TriggerAbility(Instigator, RelevantStats);
 }
@@ -56,15 +56,41 @@ void UAbilitySystem::PassDefaultStatSetsToEffectiveStatSets()
 	}
 }
 
-bool UAbilitySystem::GetStatFromName(FName StatName, float& OutValue)
+bool UAbilitySystem::SetStatFromName(FName StatName, float& OutValue)
 {
-	for (UAbilityStatSet* StatSet : EffectiveSets)
+	float Value = GetStatFromName(StatName);
+	if (Value != SEARCH_FAILED)
 	{
-		for (FAbilityStat Stat : StatSet->AbilityStatSet)
+		OutValue = Value;
+		return true;
+	}
+	return false;
+}
+
+float UAbilitySystem::GetStatFromName(FName StatName)
+{
+	for (int i = 0; i < EffectiveSets.Num(); i++)
+	{
+		for (int j = 0; j < EffectiveSets[i]->AbilityStatSet.Num(); j++)
 		{
-			if (StatName.IsEqual(Stat.Name, ENameCase::IgnoreCase))
+			if (StatName.IsEqual(EffectiveSets[i]->AbilityStatSet[j].Name, ENameCase::IgnoreCase))
 			{
-				OutValue = Stat.Value;
+				return EffectiveSets[i]->AbilityStatSet[j].Value;
+			}
+		}
+	}
+	return SEARCH_FAILED;
+}
+
+bool UAbilitySystem::SetStatValue(const FName StatName, const float InValue)
+{
+	for (int i = 0; i < EffectiveSets.Num(); i++)
+	{
+		for (int j = 0; j < EffectiveSets[i]->AbilityStatSet.Num(); j++)
+		{
+			if (EffectiveSets[i]->AbilityStatSet[j].Name.IsEqual(StatName, ENameCase::IgnoreCase))
+			{
+				EffectiveSets[i]->AbilityStatSet[j].Value = InValue;
 				return true;
 			}
 		}
@@ -72,16 +98,27 @@ bool UAbilitySystem::GetStatFromName(FName StatName, float& OutValue)
 	return false;
 }
 
-bool UAbilitySystem::GetStatSetFromName(FName StatSetName, UAbilityStatSet* OutStatSet)
+bool UAbilitySystem::SetStatSetFromName(FName StatSetName, UAbilityStatSet* OutStatSet)
 {
-	for (UAbilityStatSet* StatSet : EffectiveSets)
+	UAbilityStatSet* Set = GetStatSetFromName(StatSetName);
+	if (Set)
 	{
-		if (StatSet->StatSetName.IsEqual(StatSetName, ENameCase::IgnoreCase))
+		OutStatSet = Set;
+		return true;
+	}
+
+	return false;
+}
+
+UAbilityStatSet* UAbilitySystem::GetStatSetFromName(FName StatSetName)
+{
+	for (int i = 0; i < EffectiveSets.Num(); i++)
+	{
+		if (EffectiveSets[i]->StatSetName.IsEqual(StatSetName, ENameCase::IgnoreCase))
 		{
-			OutStatSet = StatSet;
-			return true;
+			return EffectiveSets[i];
 		}
 	}
-	return false;
+	return nullptr;
 }
 

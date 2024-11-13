@@ -46,12 +46,13 @@ void ATower::Init()
 	{
 		AbilitySystem->PassDefaultStatSetsToEffectiveStatSets();
 
+		TArray<float> RelevantStats = TArray<float>();
+
 		if (EnemyCheckAbility)
 		{
 			AActor* TowerActor = this;
-			TArray<float> RelevantStats = TArray<float>();
 			float AoeStat = -1.0f;
-			if (AbilitySystem->GetStatFromName("AoeSize", AoeStat))
+			if (AbilitySystem->SetStatFromName("AoeSize", AoeStat))
 			{
 				RelevantStats.Add(AoeStat);
 			}

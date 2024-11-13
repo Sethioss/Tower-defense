@@ -21,6 +21,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class UAbility> WalkingAbility;
 
+	TArray<float> WalkingRelevantStats = TArray<float>();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class UAbility> AttackingAbility;
 
@@ -36,6 +38,12 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class UAbilitySystem> AbilitySystem;
+
+	virtual void Walk();
+
+	void SetPositionOnLvlPath(TObjectPtr<class USplineComponent> Path, float ProgressionOverride = -1.0f);
+
+	class ULevelElementsManagerSubsystem* LevelElementsManagerCache = nullptr;
 
 public:	
 	// Called every frame
