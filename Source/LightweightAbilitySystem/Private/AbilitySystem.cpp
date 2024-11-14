@@ -37,9 +37,9 @@ void UAbilitySystem::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	// ...
 }
 
-void UAbilitySystem::TriggerAbility(UAbility* AbilityToLaunch, AActor* Instigator, TArray<FAbilityStat>& RelevantStats, TArray<float>& RelevantValues)
+void UAbilitySystem::TriggerAbility(UAbility* AbilityToLaunch, AActor* Instigator, TArray<float>& RelevantValues)
 {
-	AbilityToLaunch->TriggerAbility(Instigator, RelevantStats, RelevantValues);
+	AbilityToLaunch->TriggerAbility(Instigator, RelevantValues);
 }
 
 void UAbilitySystem::PassDefaultStatSetsToEffectiveStatSets()

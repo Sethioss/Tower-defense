@@ -2,10 +2,23 @@
 
 #include "MoveAlongSplineAbility.h"
 
-void UMoveAlongSplineAbility::TriggerAbility(AActor* Instigator, TArray<FAbilityStat>& RelevantStats, TArray<float>& RelevantValues)
+void UMoveAlongSplineAbility::PrepareBuffers(AActor* Instigator, AActor* Target)
 {
-	Super::TriggerAbility(Instigator, RelevantStats, RelevantValues);
+	Super::PrepareBuffers(Instigator, Target);
+
+	InstigatorAS->InitStatBuffer(3, InstigatorAS->RelevantStatBuffer);
+
+	InstigatorAS->RegisterStatForAbility("Speed");
+	InstigatorAS->RegisterStatForAbility("AdvancementOnSpline", true);
+	InstigatorAS->RegisterStatForAbility("Slowed");
+}
+
+void UMoveAlongSplineAbility::TriggerAbility(AActor* Instigator, TArray<float>& RelevantValues, AActor* Target)
+{
+	Super::TriggerAbility(Instigator, RelevantValues);
 	OnAbilityTrigger(Instigator);
+
+	TArray<FAbilityStat>& RelevantStats = InstigatorAS->RelevantStatBuffer;
 
 	if (RelevantStats.Num() > 0)
 	{
@@ -13,10 +26,10 @@ void UMoveAlongSplineAbility::TriggerAbility(AActor* Instigator, TArray<FAbility
 		RelevantStats[1].Value = FMath::Min(AdvancementValue + RelevantStats[1].Value, 5000.0f);
 	}
 
-	PostTrigger(Instigator, RelevantStats, RelevantValues);
+	PostTrigger(Instigator, RelevantValues, Target);
 }
 
-void UMoveAlongSplineAbility::PostTrigger(AActor* Instigator, TArray<FAbilityStat>& RelevantStats, TArray<float>& RelevantValues)
+void UMoveAlongSplineAbility::PostTrigger(AActor* Instigator, TArray<float>& RelevantValues, AActor* Target)
 {
-	Super::PostTrigger(Instigator, RelevantStats, RelevantValues);
+	Super::PostTrigger(Instigator, RelevantValues);
 }

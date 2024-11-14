@@ -61,27 +61,17 @@ void ATower::TriggerEnemySearch()
 {
 	if (AbilitySystem)
 	{
-		AbilitySystem->PassDefaultStatSetsToEffectiveStatSets();
-
 		FVector Pos = GetActorLocation();
-
-		float Aoe = AbilitySystem->RetrieveStatValueFromName("AoeSize");
 
 		if (EnemyCheckAbility)
 		{
-			AbilitySystem->InitStatBuffer(1, AbilitySystem->RelevantStatBuffer);
 			AbilitySystem->InitValueBuffer(3, AbilitySystem->RelevantValueBuffer);
-
-			AbilitySystem->RegisterStatForAbility("AoeSize");
 
 			AbilitySystem->RegisterValueForAbility(Pos.X);
 			AbilitySystem->RegisterValueForAbility(Pos.Y);
 			AbilitySystem->RegisterValueForAbility(Pos.Z);
 
-			AbilitySystem->TriggerAbility(EnemyCheckAbility.GetDefaultObject(), this, AbilitySystem->RelevantStatBuffer, AbilitySystem->RelevantValueBuffer);
-
-			AbilitySystem->EmptyStatBuffer(AbilitySystem->RelevantStatBuffer);
-			AbilitySystem->EmptyValueBuffer(AbilitySystem->RelevantValueBuffer);
+			AbilitySystem->TriggerAbility(EnemyCheckAbility.GetDefaultObject(), this, AbilitySystem->RelevantValueBuffer);
 		}
 	}
 }

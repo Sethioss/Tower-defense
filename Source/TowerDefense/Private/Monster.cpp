@@ -84,15 +84,7 @@ void AMonster::Tick(float DeltaTime)
 
 void AMonster::Walk()
 {
-	AbilitySystem->InitStatBuffer(3, AbilitySystem->RelevantStatBuffer);
-
-	AbilitySystem->RegisterStatForAbility("Speed");
-	AbilitySystem->RegisterStatForAbility("AdvancementOnSpline", true);
-	AbilitySystem->RegisterStatForAbility("Slowed");
-
-	AbilitySystem->TriggerAbility(WalkingAbility.GetDefaultObject(), this, AbilitySystem->RelevantStatBuffer, AbilitySystem->RelevantValueBuffer);
-
-	AbilitySystem->EmptyStatBuffer(AbilitySystem->RelevantStatBuffer);
+	AbilitySystem->TriggerAbility(WalkingAbility.GetDefaultObject(), this, AbilitySystem->RelevantValueBuffer);
 
 	if (LevelElementsManagerCache)
 	{

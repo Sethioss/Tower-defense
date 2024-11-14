@@ -15,5 +15,9 @@ class ABILITIES_API UCheckForSurroundingEnemies : public UAbility
 	GENERATED_BODY()
 
 public:
-	virtual void TriggerAbility(AActor* Instigator, TArray<FAbilityStat>& RelevantStats, TArray<float>& RelevantValues) override;
+	virtual void PrepareBuffers(AActor* Instigator, AActor* Target = nullptr) override;
+
+	virtual void TriggerAbility(AActor* Instigator, TArray<float>& RelevantValues, AActor* Target = nullptr) override;
+
+	virtual void PostTrigger(AActor* Instigator, TArray<float>& RelevantValues, AActor* Target = nullptr) override;
 };

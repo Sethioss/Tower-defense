@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "LightweightAbilitySystem/Public/LightWeightAbilitySystemCore.h"
-#include "LightweightAbilitySystem/Public/AbilityStatSet.h"
+#include "LightWeightAbilitySystemCore.h"
+#include "AbilityStatSet.h"
+#include "AbilitySystem.h"
 #include "Ability.generated.h"
 
 /**
@@ -26,11 +27,20 @@ public:
 
 	UAbility();
 
-	UFUNCTION()
-	virtual void TriggerAbility(AActor* Instigator, TArray<FAbilityStat>& RelevantStats, TArray<float>& RelevantValues);
+	UAbilitySystem* InstigatorAS = nullptr;
+	UAbilitySystem* TargetAS = nullptr;
 
 	UFUNCTION()
-	virtual void PostTrigger(AActor* Instigator, TArray<FAbilityStat>& RelevantStats, TArray<float>& RelevantValues);
+	virtual void PrepareBuffers(AActor* Instigator, AActor* Target = nullptr);
+
+	UFUNCTION()
+	virtual void DebugUsedStatsAndValues(AActor* Instigator, TArray<FAbilityStat>& RelevantStats, TArray<float>& RelevantValues, AActor* Target = nullptr);
+
+	UFUNCTION()
+	virtual void TriggerAbility(AActor* Instigator, TArray<float>& RelevantValues, AActor* Target = nullptr);
+
+	UFUNCTION()
+	virtual void PostTrigger(AActor* Instigator, TArray<float>& RelevantValues, AActor* Target = nullptr);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnAbilityTrigger(AActor* Instigator);
