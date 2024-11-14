@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Abilities/Public/Ability.h"
+#include "LightweightAbilitySystem/Public/AbilitySystem.h"
 #include "TowerProjectile.generated.h"
 
 UCLASS()

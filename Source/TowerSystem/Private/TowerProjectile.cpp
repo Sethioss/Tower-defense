@@ -3,7 +3,7 @@
 
 #include "TowerProjectile.h"
 #include "Components/StaticMeshComponent.h"
-#include "LightweightAbilitySystem/Public/Ability.h"
+#include "Abilities/Public/Ability.h"
 
 // Sets default values
 ATowerProjectile::ATowerProjectile()

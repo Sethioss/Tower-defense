@@ -10,7 +10,7 @@ UAbility::UAbility()
 	AbilityName = FText::FromString(GetName());
 }
 
-void UAbility::TriggerAbility(AActor* Instigator, TArray<FAbilityStat>& RelevantStats)
+void UAbility::TriggerAbility(AActor* Instigator, TArray<FAbilityStat>& RelevantStats, TArray<float>& RelevantValues)
 {
 	OnAbilityTrigger(Instigator);
 
@@ -22,10 +22,17 @@ void UAbility::TriggerAbility(AActor* Instigator, TArray<FAbilityStat>& Relevant
 		{
 			UE_LOG(AbilitySystemLog, Display, TEXT("%i: %s (%f)"), i, *RelevantStats[i].Name.ToString(), RelevantStats[i].Value);
 		}
+
+		UE_LOG(AbilitySystemLog, Display, TEXT("Values used in this ability: %i"), RelevantValues.Num());
+
+		for (int i = 0; i < RelevantValues.Num(); i++)
+		{
+			UE_LOG(AbilitySystemLog, Display, TEXT("%i: %f"), i, RelevantValues[i]);
+		}
 	}
 }
 
-void UAbility::PostTrigger(AActor* Instigator, TArray<FAbilityStat>& RelevantStats)
+void UAbility::PostTrigger(AActor* Instigator, TArray<FAbilityStat>& RelevantStats, TArray<float>& RelevantValues)
 {
 	UAbilitySystem* AbilitySystem = Instigator->GetComponentByClass<UAbilitySystem>();
 	if (AbilitySystem)

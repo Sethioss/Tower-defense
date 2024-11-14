@@ -2,9 +2,6 @@
 
 
 #include "Monster.h"
-#include "LightweightAbilitySystem/Public/Ability.h"
-#include "LightweightAbilitySystem/Public/AbilitySystem.h"
-//#include "LightweightAbilitySystem/Public/AbilityStatSet.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SplineComponent.h"
 #include "HealthComponent.h"
@@ -65,18 +62,37 @@ void AMonster::BeginPlay()
 			UE_LOG(LogTemp, Error, TEXT("Couldn't do initial SetPosition cause LevelElementsManagerCache is null"));
 		}
 	}
+
+	GetWorld()->GetTimerManager().SetTimer(WalkTimerHandle, this, &AMonster::Walk, 0.025f, true);
+
+}
+
+void AMonster::EndPlay(EEndPlayReason::Type EndPlayReason)
+{
+	AbilitySystem->SetStatValue("AdvancementOnSpline", 0.0f);
+	GetWorldTimerManager().ClearTimer(WalkTimerHandle);
+
+}
+
+// Called every frame
+void AMonster::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	//Walk();
 }
 
 void AMonster::Walk()
 {
-	AbilitySystem->InitRelevantStatBuffer(2);
+	AbilitySystem->InitStatBuffer(3, AbilitySystem->RelevantStatBuffer);
 
 	AbilitySystem->RegisterStatForAbility("Speed");
 	AbilitySystem->RegisterStatForAbility("AdvancementOnSpline", true);
+	AbilitySystem->RegisterStatForAbility("Slowed");
 
-	AbilitySystem->TriggerAbility(WalkingAbility.GetDefaultObject(), this, AbilitySystem->RelevantStatBuffer);
+	AbilitySystem->TriggerAbility(WalkingAbility.GetDefaultObject(), this, AbilitySystem->RelevantStatBuffer, AbilitySystem->RelevantValueBuffer);
 
-	AbilitySystem->EmptyStatBuffer();
+	AbilitySystem->EmptyStatBuffer(AbilitySystem->RelevantStatBuffer);
 
 	if (LevelElementsManagerCache)
 	{
@@ -116,13 +132,5 @@ void AMonster::SetPositionOnLvlPath(TObjectPtr<USplineComponent> LevelPath, floa
 
 	SetActorLocation(NewLocation);
 	SetActorRotation(NewRotation);
-}
-
-// Called every frame
-void AMonster::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	Walk();
 }
 

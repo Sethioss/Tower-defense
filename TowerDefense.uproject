@@ -23,6 +23,15 @@
 			]
 		},
 		{
+			"Name": "Abilities",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine",
+				"CoreUObject"
+			]
+		},
+		{
 			"Name": "TowerSystem",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",

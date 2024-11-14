@@ -2,8 +2,8 @@
 
 
 #include "AbilitySystem.h"
-#include "Ability.h"
 #include "AbilityStatSet.h"
+#include "Abilities/Public/Ability.h"
 
 DEFINE_LOG_CATEGORY(AbilitySystemLog);
 DEFINE_LOG_CATEGORY(AbilitySystemWarning);
@@ -37,9 +37,9 @@ void UAbilitySystem::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	// ...
 }
 
-void UAbilitySystem::TriggerAbility(UAbility* AbilityToLaunch, AActor* Instigator, TArray<FAbilityStat>& RelevantStats)
+void UAbilitySystem::TriggerAbility(UAbility* AbilityToLaunch, AActor* Instigator, TArray<FAbilityStat>& RelevantStats, TArray<float>& RelevantValues)
 {
-	AbilityToLaunch->TriggerAbility(Instigator, RelevantStats);
+	AbilityToLaunch->TriggerAbility(Instigator, RelevantStats, RelevantValues);
 }
 
 void UAbilitySystem::PassDefaultStatSetsToEffectiveStatSets()
@@ -80,6 +80,7 @@ bool UAbilitySystem::RetrieveStatFromName(FName StatName, FAbilityStat& OutStat)
 			}
 		}
 	}
+	UE_LOG(AbilitySystemWarning, Warning, TEXT("The stat %s couldn't be found. Make sure it is correctly defined in the stat sets. \n Also make sure that PassDefaultStatSetsToEffectiveStatSets() has been called beforehand"), *StatName.ToString());
 	return false;
 }
 
@@ -95,6 +96,7 @@ float UAbilitySystem::RetrieveStatValueFromName(FName StatName)
 			}
 		}
 	}
+	UE_LOG(AbilitySystemWarning, Warning, TEXT("The stat %s couldn't be found. Make sure it is correctly defined in the stat sets. \n Also make sure that PassDefaultStatSetsToEffectiveStatSets() has been called beforehand"), *StatName.ToString());
 	return SEARCH_FAILED;
 }
 
@@ -111,12 +113,23 @@ bool UAbilitySystem::SetStatValue(const FName StatName, const float InValue)
 			}
 		}
 	}
+	UE_LOG(AbilitySystemWarning, Warning, TEXT("The stat %s couldn't be found. Make sure it is correctly defined in the stat sets. \n Also make sure that PassDefaultStatSetsToEffectiveStatSets() has been called beforehand"), *StatName.ToString());
 	return false;
 }
 
-void UAbilitySystem::InitRelevantStatBuffer(int NumberOfStats)
+void UAbilitySystem::InitStatBuffer(int NumberOfStats, TArray<FAbilityStat>& StatBuffer)
 {
-	RelevantStatBuffer.Reserve(NumberOfStats);
+	StatBuffer.Reserve(NumberOfStats);
+}
+
+void UAbilitySystem::InitValueBuffer(int NumberOfStats, TArray<float>& ValueBuffer)
+{
+	ValueBuffer.Reserve(NumberOfStats);
+}
+
+void UAbilitySystem::RegisterValueForAbility(float Value)
+{
+	RelevantValueBuffer.Add(Value);
 }
 
 void UAbilitySystem::RegisterStatForAbility(const FName StatName, bool bIsEditedByAbility)
@@ -129,9 +142,15 @@ void UAbilitySystem::RegisterStatForAbility(const FName StatName, bool bIsEdited
 	}
 }
 
-void UAbilitySystem::EmptyStatBuffer()
+//TODO: Use a template to make these functions into one
+void UAbilitySystem::EmptyStatBuffer(TArray<FAbilityStat>& Buffer)
 {
-	RelevantStatBuffer.Empty();
+	Buffer.Empty();
+}
+
+void UAbilitySystem::EmptyValueBuffer(TArray<float>& Buffer)
+{
+	Buffer.Empty();
 }
 
 bool UAbilitySystem::SetStatSetFromName(FName StatSetName, UAbilityStatSet* OutStatSet)

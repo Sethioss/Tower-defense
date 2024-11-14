@@ -23,6 +23,9 @@ public:
 	TArray<class UAbilityStatSet*> EffectiveSets;
 
 	UPROPERTY(Transient)
+	TArray<float> RelevantValueBuffer;
+
+	UPROPERTY(Transient)
 	TArray<FAbilityStat> RelevantStatBuffer;
 
 protected:
@@ -34,7 +37,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable)
-	virtual void TriggerAbility(class UAbility* AbilityToLaunch, AActor* Instigator, TArray<FAbilityStat>& RelevantStats);
+	virtual void TriggerAbility(class UAbility* AbilityToLaunch, AActor* Instigator, TArray<FAbilityStat>& RelevantStats, TArray<float>& RelevantValues);
 
 	UFUNCTION()
 	virtual void PassDefaultStatSetsToEffectiveStatSets();
@@ -58,11 +61,21 @@ public:
 	bool SetStatValue(const FName StatName, const float InValue);
 
 	UFUNCTION(BlueprintCallable)
-	void InitRelevantStatBuffer(int NumberOfStats);
-
-	UFUNCTION(BlueprintCallable)
 	void RegisterStatForAbility(const FName StatName, bool bIsEditedByAbility = false);
 
 	UFUNCTION(BlueprintCallable)
-	void EmptyStatBuffer();
+	void RegisterValueForAbility(float Value);
+
+	//TODO: Separate Stat and Value buffer by a same class, so we can use the same function for the two buffers, or use a template
+	UFUNCTION(BlueprintCallable)
+	void InitStatBuffer(int NumberOfStats, TArray<FAbilityStat>& StatBuffer);
+
+	UFUNCTION(BlueprintCallable)
+	void InitValueBuffer(int NumberOfStats, TArray<float>& ValueBuffer);
+
+	UFUNCTION(BlueprintCallable)
+	void EmptyStatBuffer(TArray<FAbilityStat>& Buffer);
+
+	UFUNCTION(BlueprintCallable)
+	void EmptyValueBuffer(TArray<float>& Buffer);
 };

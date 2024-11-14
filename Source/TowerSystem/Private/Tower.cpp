@@ -3,9 +3,9 @@
 
 #include "Tower.h"
 #include "Components/StaticMeshComponent.h"
-#include "LightweightAbilitySystem/Public/AbilitySystem.h"
-#include "LightweightAbilitySystem/Public/Ability.h"
-#include "LightweightAbilitySystem/Public/AbilityStatSet.h"
+#include "AbilitySystem.h"
+#include "AbilityStatSet.h"
+#include "Ability.h"
 
 // Sets default values
 ATower::ATower()
@@ -35,6 +35,11 @@ void ATower::BeginPlay()
 	
 }
 
+void ATower::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	GetWorldTimerManager().ClearTimer(CheckEnemiesTimerHandle);
+}
+
 // Called every frame
 void ATower::Tick(float DeltaTime)
 {
@@ -47,15 +52,36 @@ void ATower::Init()
 	{
 		AbilitySystem->PassDefaultStatSetsToEffectiveStatSets();
 
+		float AtkRate = AbilitySystem->RetrieveStatValueFromName("AtkRate");
+		GetWorld()->GetTimerManager().SetTimer(CheckEnemiesTimerHandle, this, &ATower::TriggerEnemySearch, AtkRate, true);
+	}
+}
+
+void ATower::TriggerEnemySearch()
+{
+	if (AbilitySystem)
+	{
+		AbilitySystem->PassDefaultStatSetsToEffectiveStatSets();
+
+		FVector Pos = GetActorLocation();
+
+		float Aoe = AbilitySystem->RetrieveStatValueFromName("AoeSize");
+
 		if (EnemyCheckAbility)
 		{
-			AbilitySystem->InitRelevantStatBuffer(1);
+			AbilitySystem->InitStatBuffer(1, AbilitySystem->RelevantStatBuffer);
+			AbilitySystem->InitValueBuffer(3, AbilitySystem->RelevantValueBuffer);
 
 			AbilitySystem->RegisterStatForAbility("AoeSize");
 
-			AbilitySystem->TriggerAbility(EnemyCheckAbility.GetDefaultObject(), this, AbilitySystem->RelevantStatBuffer);
+			AbilitySystem->RegisterValueForAbility(Pos.X);
+			AbilitySystem->RegisterValueForAbility(Pos.Y);
+			AbilitySystem->RegisterValueForAbility(Pos.Z);
 
-			AbilitySystem->EmptyStatBuffer();
+			AbilitySystem->TriggerAbility(EnemyCheckAbility.GetDefaultObject(), this, AbilitySystem->RelevantStatBuffer, AbilitySystem->RelevantValueBuffer);
+
+			AbilitySystem->EmptyStatBuffer(AbilitySystem->RelevantStatBuffer);
+			AbilitySystem->EmptyValueBuffer(AbilitySystem->RelevantValueBuffer);
 		}
 	}
 }

@@ -43,5 +43,5 @@ AAbilityDebuggerActor* AAbilityDebuggerActor::GetInstance()
 
 void AAbilityDebuggerActor::DebugSphere(FVector Location, float Radius)
 {
-	DrawDebugSphere(GetWorld(), Location, Radius, 8, FColor::Purple, true, -1, 0U, 2.0f);
+	DrawDebugSphere(GetWorld(), Location, Radius, 8, FColor::Purple, false, 0.1f, 0U, 2.0f);
 }

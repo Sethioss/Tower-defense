@@ -24,6 +24,6 @@ public:
 	void RemoveResource(class UAbilitySystem* AS);
 
 private:
-	int GoldResource = 0;
+	int GoldResource = 999;
 	
 };

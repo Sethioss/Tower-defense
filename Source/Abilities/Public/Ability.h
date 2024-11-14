@@ -3,15 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
-#include "LightWeightAbilitySystemCore.h"
+#include "LightweightAbilitySystem/Public/LightWeightAbilitySystemCore.h"
+#include "LightweightAbilitySystem/Public/AbilityStatSet.h"
 #include "Ability.generated.h"
 
 /**
  * 
  */
 UCLASS(Blueprintable, BlueprintType)
-class LIGHTWEIGHTABILITYSYSTEM_API UAbility : public UObject
+class ABILITIES_API UAbility : public UObject
 {
 	GENERATED_BODY()
 	
@@ -27,10 +27,10 @@ public:
 	UAbility();
 
 	UFUNCTION()
-	virtual void TriggerAbility(AActor* Instigator, TArray<FAbilityStat>& RelevantStats);
+	virtual void TriggerAbility(AActor* Instigator, TArray<FAbilityStat>& RelevantStats, TArray<float>& RelevantValues);
 
 	UFUNCTION()
-	virtual void PostTrigger(AActor* Instigator, TArray<FAbilityStat>& RelevantStats);
+	virtual void PostTrigger(AActor* Instigator, TArray<FAbilityStat>& RelevantStats, TArray<float>& RelevantValues);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnAbilityTrigger(AActor* Instigator);
