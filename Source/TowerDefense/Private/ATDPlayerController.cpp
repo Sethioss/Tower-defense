@@ -50,7 +50,6 @@ void AATDPlayerController::HandleClick()
 		ATowerSpot* TowerSpot = Cast<ATowerSpot>(HitResult.GetActor());
 		if(TowerSpot && SelectedTower != nullptr)
 		{
-			UE_LOG(LogTemp, Log, TEXT("I hit a tower spot!"));
 			TowerSpot->FillSpotWithTower(SelectedTower);
 		}
 	}

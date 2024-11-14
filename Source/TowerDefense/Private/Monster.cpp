@@ -4,6 +4,7 @@
 #include "Monster.h"
 #include "LightweightAbilitySystem/Public/Ability.h"
 #include "LightweightAbilitySystem/Public/AbilitySystem.h"
+//#include "LightweightAbilitySystem/Public/AbilityStatSet.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SplineComponent.h"
 #include "HealthComponent.h"
@@ -41,49 +42,41 @@ void AMonster::BeginPlay()
 	Super::BeginPlay();
 
 	AbilitySystem->PassDefaultStatSetsToEffectiveStatSets();
-
-	SETATTRIBUTE(AdvancementOnSpline, 0);
+	AbilitySystem->SetStatValue("AdvancementOnSpline", 0.0f);
 
 	LevelElementsManagerCache = ULevelElementsManagerSubsystem::Get(GetWorld());
-	LevelElementsManagerCache->FindPathActor();
-
-	if (LevelElementsManagerCache)
+	if (!LevelElementsManagerCache->PathActor)
 	{
-		if (LevelElementsManagerCache->PathActor)
+		LevelElementsManagerCache->FindPathActor();
+
+		if (LevelElementsManagerCache)
 		{
-			SetPositionOnLvlPath(LevelElementsManagerCache->PathActor->Path, 0.0f);
+			if (LevelElementsManagerCache->PathActor)
+			{
+				SetPositionOnLvlPath(LevelElementsManagerCache->PathActor->Path, 0.0f);
+			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("Couldn't do initial SetPosition cause LvlPath is null"));
+			}
 		}
 		else
 		{
-			UE_LOG(LogTemp, Error, TEXT("Couldn't do initial SetPosition cause LvlPath is null"));
+			UE_LOG(LogTemp, Error, TEXT("Couldn't do initial SetPosition cause LevelElementsManagerCache is null"));
 		}
 	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("Couldn't do initial SetPosition cause LevelElementsManagerCache is null"));
-	}
-	
 }
 
 void AMonster::Walk()
 {
-	WalkingRelevantStats.Empty();
+	AbilitySystem->InitRelevantStatBuffer(2);
 
-	float SpeedStat = 0.0f;
-	if (AbilitySystem->SetStatFromName("Speed", SpeedStat))
-	{
-		WalkingRelevantStats.Add(SpeedStat);
-	}
+	AbilitySystem->RegisterStatForAbility("Speed");
+	AbilitySystem->RegisterStatForAbility("AdvancementOnSpline", true);
 
-	float AdvancementOnSpline = 0.0f;
-	if (AbilitySystem->SetStatFromName("AdvancementOnSpline", AdvancementOnSpline))
-	{
-		WalkingRelevantStats.Add(AdvancementOnSpline);
-	}
+	AbilitySystem->TriggerAbility(WalkingAbility.GetDefaultObject(), this, AbilitySystem->RelevantStatBuffer);
 
-	AbilitySystem->TriggerAbility(WalkingAbility.GetDefaultObject(), this, WalkingRelevantStats);
-
-	SETATTRIBUTE(AdvancementOnSpline, WalkingRelevantStats[1]);
+	AbilitySystem->EmptyStatBuffer();
 
 	if (LevelElementsManagerCache)
 	{
@@ -103,14 +96,12 @@ void AMonster::Walk()
 	{
 		UE_LOG(LogTemp, Error, TEXT("LevelElementsManager instance wasn't found, please make sure there is always one in the scene. Aborting monster walking operation"));
 	}
-
-
 }
 
 void AMonster::SetPositionOnLvlPath(TObjectPtr<USplineComponent> LevelPath, float ProgressionOverride)
 {
 
-	float Advancement = GETATTRIBUTE(AdvancementOnSpline);
+	float Advancement = AbilitySystem->RetrieveStatValueFromName("AdvancementOnSpline");
 
 	FVector NewLocation = LevelPath->GetLocationAtDistanceAlongSpline(
 		ProgressionOverride = -1.0f ? Advancement : ProgressionOverride,

@@ -7,10 +7,6 @@
 #include "LightWeightAbilitySystemCore.h"
 #include "AbilitySystem.generated.h"
 
-#define SEARCH_FAILED -9999.99f
-#define GETATTRIBUTE(X) AbilitySystem->GetStatFromName(#X);
-#define SETATTRIBUTE(X, Y) AbilitySystem->SetStatValue(#X, Y);
-
 UCLASS( BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class LIGHTWEIGHTABILITYSYSTEM_API UAbilitySystem : public UActorComponent
 {
@@ -26,6 +22,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	TArray<class UAbilityStatSet*> EffectiveSets;
 
+	UPROPERTY(Transient)
+	TArray<FAbilityStat> RelevantStatBuffer;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -35,7 +34,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable)
-	virtual void TriggerAbility(class UAbility* AbilityToLaunch, AActor* Instigator, TArray<float>& RelevantStats);
+	virtual void TriggerAbility(class UAbility* AbilityToLaunch, AActor* Instigator, TArray<FAbilityStat>& RelevantStats);
 
 	UFUNCTION()
 	virtual void PassDefaultStatSetsToEffectiveStatSets();
@@ -44,7 +43,10 @@ public:
 	virtual bool SetStatFromName(FName StatName, float& OutValue);
 
 	UFUNCTION(BlueprintCallable)
-	virtual float GetStatFromName(FName StatName);
+	virtual float RetrieveStatValueFromName(FName StatName);
+
+	UFUNCTION(BlueprintCallable)
+	bool RetrieveStatFromName(FName StatName, FAbilityStat& OutStat);
 
 	UFUNCTION(BlueprintCallable)
 	virtual bool SetStatSetFromName(FName StatSetName, class UAbilityStatSet* OutValue);
@@ -54,4 +56,13 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool SetStatValue(const FName StatName, const float InValue);
+
+	UFUNCTION(BlueprintCallable)
+	void InitRelevantStatBuffer(int NumberOfStats);
+
+	UFUNCTION(BlueprintCallable)
+	void RegisterStatForAbility(const FName StatName, bool bIsEditedByAbility = false);
+
+	UFUNCTION(BlueprintCallable)
+	void EmptyStatBuffer();
 };

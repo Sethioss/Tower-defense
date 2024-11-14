@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "LightweightAbilitySystem/Public/AbilityStatSet.h"
 #include "Monster.generated.h"
 
 UCLASS()
@@ -20,8 +21,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class UAbility> WalkingAbility;
-
-	TArray<float> WalkingRelevantStats = TArray<float>();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class UAbility> AttackingAbility;

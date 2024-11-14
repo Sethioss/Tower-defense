@@ -37,7 +37,7 @@ void UAbilitySystem::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	// ...
 }
 
-void UAbilitySystem::TriggerAbility(UAbility* AbilityToLaunch, AActor* Instigator, TArray<float>& RelevantStats)
+void UAbilitySystem::TriggerAbility(UAbility* AbilityToLaunch, AActor* Instigator, TArray<FAbilityStat>& RelevantStats)
 {
 	AbilityToLaunch->TriggerAbility(Instigator, RelevantStats);
 }
@@ -58,7 +58,7 @@ void UAbilitySystem::PassDefaultStatSetsToEffectiveStatSets()
 
 bool UAbilitySystem::SetStatFromName(FName StatName, float& OutValue)
 {
-	float Value = GetStatFromName(StatName);
+	float Value = RetrieveStatValueFromName(StatName);
 	if (Value != SEARCH_FAILED)
 	{
 		OutValue = Value;
@@ -67,7 +67,23 @@ bool UAbilitySystem::SetStatFromName(FName StatName, float& OutValue)
 	return false;
 }
 
-float UAbilitySystem::GetStatFromName(FName StatName)
+bool UAbilitySystem::RetrieveStatFromName(FName StatName, FAbilityStat& OutStat)
+{
+	for (int i = 0; i < EffectiveSets.Num(); i++)
+	{
+		for (int j = 0; j < EffectiveSets[i]->AbilityStatSet.Num(); j++)
+		{
+			if (StatName.IsEqual(EffectiveSets[i]->AbilityStatSet[j].Name, ENameCase::IgnoreCase))
+			{
+				OutStat = EffectiveSets[i]->AbilityStatSet[j];
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+float UAbilitySystem::RetrieveStatValueFromName(FName StatName)
 {
 	for (int i = 0; i < EffectiveSets.Num(); i++)
 	{
@@ -96,6 +112,26 @@ bool UAbilitySystem::SetStatValue(const FName StatName, const float InValue)
 		}
 	}
 	return false;
+}
+
+void UAbilitySystem::InitRelevantStatBuffer(int NumberOfStats)
+{
+	RelevantStatBuffer.Reserve(NumberOfStats);
+}
+
+void UAbilitySystem::RegisterStatForAbility(const FName StatName, bool bIsEditedByAbility)
+{
+	FAbilityStat* Stat = new FAbilityStat();
+	if (RetrieveStatFromName(StatName, *Stat))
+	{
+		Stat->bEditedByAbility = bIsEditedByAbility;
+		RelevantStatBuffer.Add(*Stat);
+	}
+}
+
+void UAbilitySystem::EmptyStatBuffer()
+{
+	RelevantStatBuffer.Empty();
 }
 
 bool UAbilitySystem::SetStatSetFromName(FName StatSetName, UAbilityStatSet* OutStatSet)

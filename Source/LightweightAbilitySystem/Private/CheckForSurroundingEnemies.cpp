@@ -4,13 +4,14 @@
 #include "CheckForSurroundingEnemies.h"
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
+#include "AbilityStatSet.h"
 #include "TowerSystem/Public/Tower.h"
 #include "AbilityDebuggerActor.h"
 
-void UCheckForSurroundingEnemies::TriggerAbility(AActor* Instigator, TArray<float>& RelevantStats)
+void UCheckForSurroundingEnemies::TriggerAbility(AActor* Instigator, TArray<FAbilityStat>& RelevantStats)
 {
 	Super::TriggerAbility(Instigator, RelevantStats);
-	OnAbilityTrigger();
+	OnAbilityTrigger(Instigator);
 
 	ATower* Tower = Cast<ATower>(Instigator);
 
@@ -22,7 +23,7 @@ void UCheckForSurroundingEnemies::TriggerAbility(AActor* Instigator, TArray<floa
 		{
 			if (RelevantStats.Num() > 0)
 			{
-				AAbilityDebuggerActor::GetInstance()->DebugSphere(Pos, RelevantStats[0]);
+				AAbilityDebuggerActor::GetInstance()->DebugSphere(Pos, RelevantStats[0].Value);
 			}
 			else
 			{

@@ -21,9 +21,17 @@ public:
 	UPROPERTY(EditAnywhere)
 	int Cost = 0;
 
+	UPROPERTY(EditAnywhere)
+	bool bDebugAbility = false;
+
+	UAbility();
+
 	UFUNCTION()
-	virtual void TriggerAbility(AActor* Instigator, TArray<float>& RelevantStats);
+	virtual void TriggerAbility(AActor* Instigator, TArray<FAbilityStat>& RelevantStats);
+
+	UFUNCTION()
+	virtual void PostTrigger(AActor* Instigator, TArray<FAbilityStat>& RelevantStats);
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void OnAbilityTrigger();
+	void OnAbilityTrigger(AActor* Instigator);
 };

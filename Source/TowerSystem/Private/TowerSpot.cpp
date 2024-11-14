@@ -43,7 +43,6 @@ void ATowerSpot::FillSpotWithTower(TSubclassOf<ATower> InTower)
 		TObjectPtr<ATower> SpawnedTower = GetWorld()->SpawnActor<ATower>(InTower.Get(), Location, Rotation, SpawnParams);
 		if (SpawnedTower)
 		{
-			UE_LOG(LogTemp, Log, TEXT("TowerSlot: I spawned a %s"), *SpawnedTower.GetName());
 			Tower = SpawnedTower;
 			Tower->Init();
 		}

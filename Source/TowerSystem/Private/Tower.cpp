@@ -5,6 +5,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "LightweightAbilitySystem/Public/AbilitySystem.h"
 #include "LightweightAbilitySystem/Public/Ability.h"
+#include "LightweightAbilitySystem/Public/AbilityStatSet.h"
 
 // Sets default values
 ATower::ATower()
@@ -46,18 +47,15 @@ void ATower::Init()
 	{
 		AbilitySystem->PassDefaultStatSetsToEffectiveStatSets();
 
-		TArray<float> RelevantStats = TArray<float>();
-
 		if (EnemyCheckAbility)
 		{
-			AActor* TowerActor = this;
-			float AoeStat = -1.0f;
-			if (AbilitySystem->SetStatFromName("AoeSize", AoeStat))
-			{
-				RelevantStats.Add(AoeStat);
-			}
+			AbilitySystem->InitRelevantStatBuffer(1);
 
-			AbilitySystem->TriggerAbility(EnemyCheckAbility.GetDefaultObject(), this, RelevantStats);
+			AbilitySystem->RegisterStatForAbility("AoeSize");
+
+			AbilitySystem->TriggerAbility(EnemyCheckAbility.GetDefaultObject(), this, AbilitySystem->RelevantStatBuffer);
+
+			AbilitySystem->EmptyStatBuffer();
 		}
 	}
 }

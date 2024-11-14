@@ -10,6 +10,11 @@ LIGHTWEIGHTABILITYSYSTEM_API DECLARE_LOG_CATEGORY_EXTERN(AbilitySystemError, Err
 /**
  * 
  */
+
+#define SEARCH_FAILED -9999.99f
+//#define GETATTRIBUTE(X) AbilitySystem->RetrieveStatValueFromName(#X);
+//#define SETATTRIBUTE(X, Y) AbilitySystem->SetStatValue(#X, Y);
+
 class LIGHTWEIGHTABILITYSYSTEM_API LightWeightAbilitySystemCore
 {
 public:

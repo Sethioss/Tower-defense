@@ -6,6 +6,7 @@
 #include "UObject/NoExportTypes.h"
 #include "AbilityStatSet.generated.h"
 
+//TODO: Make use of these
 UENUM()
 enum class UAbilityStatType
 {
@@ -27,6 +28,9 @@ struct FAbilityStat
 
 	UPROPERTY(EditAnywhere)
 	UAbilityStatType StatType = UAbilityStatType::FLOAT;
+
+	UPROPERTY(Transient)
+	bool bEditedByAbility = false;
 };
 
 UCLASS(Blueprintable)
