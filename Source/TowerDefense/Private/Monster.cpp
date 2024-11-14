@@ -40,6 +40,8 @@ void AMonster::BeginPlay()
 
 	AbilitySystem->PassDefaultStatSetsToEffectiveStatSets();
 	AbilitySystem->SetStatValue("AdvancementOnSpline", 0.0f);
+	AbilitySystem->SetStatValue("Slowed", 0.0f);
+	AbilitySystem->SetStatValue("SlownessCntd", AbilitySystem->RetrieveStatValueFromName("SlownessDrtn"));
 
 	LevelElementsManagerCache = ULevelElementsManagerSubsystem::Get(GetWorld());
 	if (!LevelElementsManagerCache->PathActor)
@@ -70,6 +72,8 @@ void AMonster::BeginPlay()
 void AMonster::EndPlay(EEndPlayReason::Type EndPlayReason)
 {
 	AbilitySystem->SetStatValue("AdvancementOnSpline", 0.0f);
+	AbilitySystem->SetStatValue("Slowed", 0.0f);
+
 	GetWorldTimerManager().ClearTimer(WalkTimerHandle);
 
 }
@@ -79,7 +83,14 @@ void AMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//Walk();
+	if (AbilitySystem->RetrieveStatValueFromName("Slowed") > 0.0f)
+	{
+		AbilitySystem->InitValueBuffer(1, AbilitySystem->RelevantValueBuffer);
+
+		AbilitySystem->RegisterValueForAbility(DeltaTime);
+
+		AbilitySystem->TriggerAbility(DepleteSlownessAbility.GetDefaultObject(), this, AbilitySystem->RelevantValueBuffer);
+	}
 }
 
 void AMonster::Walk()
@@ -108,7 +119,6 @@ void AMonster::Walk()
 
 void AMonster::SetPositionOnLvlPath(TObjectPtr<USplineComponent> LevelPath, float ProgressionOverride)
 {
-
 	float Advancement = AbilitySystem->RetrieveStatValueFromName("AdvancementOnSpline");
 
 	FVector NewLocation = LevelPath->GetLocationAtDistanceAlongSpline(

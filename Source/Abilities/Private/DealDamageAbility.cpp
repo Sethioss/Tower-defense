@@ -1,33 +1,34 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ApplySlowStatusAbility.h"
+#include "DealDamageAbility.h"
 #include "AbilityStatSet.h"
 
-void UApplySlowStatusAbility::PrepareBuffers(AActor* Instigator, AActor* Target)
+void UDealDamageAbility::PrepareBuffers(AActor* Instigator, AActor* Target)
 {
 	Super::PrepareBuffers(Instigator, Target);
 
 	InstigatorAS->InitStatBuffer(1, InstigatorAS->RelevantStatBuffer);
-	InstigatorAS->RegisterStatForAbility("AoeSize");
+	InstigatorAS->RegisterStatForAbility("Atk");
 
-	TargetAS->InitStatBuffer(2, TargetAS->RelevantStatBuffer);
-	TargetAS->RegisterStatForAbility("Slowed", true);
+	TargetAS->InitStatBuffer(1, TargetAS->RelevantStatBuffer);
+	TargetAS->RegisterStatForAbility("Health", true);
 }
 
-void UApplySlowStatusAbility::TriggerAbility(AActor* Instigator, TArray<float>& RelevantValues, AActor* Target)
+void UDealDamageAbility::TriggerAbility(AActor* Instigator, TArray<float>& RelevantValues, AActor* Target)
 {
 	Super::TriggerAbility(Instigator, RelevantValues, Target);
 
 	TArray<FAbilityStat>& RelevantStats = InstigatorAS->RelevantStatBuffer;
 	TArray<FAbilityStat>& TargetRelevantStats = TargetAS->RelevantStatBuffer;
 
-	TargetRelevantStats[0].Value = 1.0f;
+	TargetRelevantStats[0].Value -= RelevantStats[0].Value;
 
 	PostTrigger(Instigator, RelevantValues, Target);
 }
 
-void UApplySlowStatusAbility::PostTrigger(AActor* Instigator, TArray<float>& RelevantValues, AActor* Target)
+void UDealDamageAbility::PostTrigger(AActor* Instigator, TArray<float>& RelevantValues, AActor* Target)
 {
 	Super::PostTrigger(Instigator, RelevantValues, Target);
 }
+

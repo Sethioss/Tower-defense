@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Ability.h"
-#include "ApplySlowStatusAbility.generated.h"
+#include "DealDamageAbility.generated.h"
 
 /**
  * 
  */
-UCLASS(Blueprintable, BlueprintType)
-class ABILITIES_API UApplySlowStatusAbility : public UAbility
+UCLASS()
+class ABILITIES_API UDealDamageAbility : public UAbility
 {
 	GENERATED_BODY()
 

@@ -37,7 +37,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable)
-	virtual void TriggerAbility(class UAbility* AbilityToLaunch, AActor* Instigator, TArray<float>& RelevantValues);
+	virtual void TriggerAbility(class UAbility* AbilityToLaunch, AActor* Instigator, TArray<float>& RelevantValues, AActor* Target = nullptr);
 
 	UFUNCTION()
 	virtual void PassDefaultStatSetsToEffectiveStatSets();

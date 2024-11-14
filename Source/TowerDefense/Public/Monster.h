@@ -30,6 +30,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class UAbility> DeathAbility;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class UAbility> DepleteSlownessAbility;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

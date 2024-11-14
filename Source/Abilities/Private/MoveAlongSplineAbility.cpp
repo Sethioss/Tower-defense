@@ -16,7 +16,6 @@ void UMoveAlongSplineAbility::PrepareBuffers(AActor* Instigator, AActor* Target)
 void UMoveAlongSplineAbility::TriggerAbility(AActor* Instigator, TArray<float>& RelevantValues, AActor* Target)
 {
 	Super::TriggerAbility(Instigator, RelevantValues);
-	OnAbilityTrigger(Instigator);
 
 	TArray<FAbilityStat>& RelevantStats = InstigatorAS->RelevantStatBuffer;
 

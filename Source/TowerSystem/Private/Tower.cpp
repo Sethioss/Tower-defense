@@ -3,6 +3,7 @@
 
 #include "Tower.h"
 #include "Components/StaticMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "AbilitySystem.h"
 #include "AbilityStatSet.h"
 #include "Ability.h"
@@ -63,15 +64,23 @@ void ATower::TriggerEnemySearch()
 	{
 		FVector Pos = GetActorLocation();
 
-		if (EnemyCheckAbility)
+		AbilitySystem->InitValueBuffer(3, AbilitySystem->RelevantValueBuffer);
+
+		AbilitySystem->RegisterValueForAbility(Pos.X);
+		AbilitySystem->RegisterValueForAbility(Pos.Y);
+		AbilitySystem->RegisterValueForAbility(Pos.Z);
+
+		AbilitySystem->TriggerAbility(EnemyCheckAbility.GetDefaultObject(), this, AbilitySystem->RelevantValueBuffer);
+
+		if (ShootingAbility)
 		{
-			AbilitySystem->InitValueBuffer(3, AbilitySystem->RelevantValueBuffer);
+			TArray<AActor*> Monsterlist;
+			UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMonster::StaticClass(), Monsterlist);
 
-			AbilitySystem->RegisterValueForAbility(Pos.X);
-			AbilitySystem->RegisterValueForAbility(Pos.Y);
-			AbilitySystem->RegisterValueForAbility(Pos.Z);
-
-			AbilitySystem->TriggerAbility(EnemyCheckAbility.GetDefaultObject(), this, AbilitySystem->RelevantValueBuffer);
+			for (int i = 0; i < Monsterlist.Num(); i++)
+			{
+				AbilitySystem->TriggerAbility(ShootingAbility.GetDefaultObject(), this, AbilitySystem->RelevantValueBuffer, Monsterlist[i]);
+			}
 		}
 	}
 }

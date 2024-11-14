@@ -4,21 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "Ability.h"
-#include "ApplySlowStatusAbility.generated.h"
+#include "DecreaseSlownessStatusAbility.generated.h"
 
 /**
  * 
  */
-UCLASS(Blueprintable, BlueprintType)
-class ABILITIES_API UApplySlowStatusAbility : public UAbility
+UCLASS()
+class ABILITIES_API UDecreaseSlownessStatusAbility : public UAbility
 {
 	GENERATED_BODY()
-
+	
 public:
 	virtual void PrepareBuffers(AActor* Instigator, AActor* Target = nullptr) override;
 
 	virtual void TriggerAbility(AActor* Instigator, TArray<float>& RelevantValues, AActor* Target = nullptr) override;
 
 	virtual void PostTrigger(AActor* Instigator, TArray<float>& RelevantValues, AActor* Target = nullptr) override;
-	
 };

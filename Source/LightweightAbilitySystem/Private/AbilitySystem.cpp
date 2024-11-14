@@ -37,9 +37,16 @@ void UAbilitySystem::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	// ...
 }
 
-void UAbilitySystem::TriggerAbility(UAbility* AbilityToLaunch, AActor* Instigator, TArray<float>& RelevantValues)
+void UAbilitySystem::TriggerAbility(UAbility* AbilityToLaunch, AActor* Instigator, TArray<float>& RelevantValues, AActor* Target)
 {
-	AbilityToLaunch->TriggerAbility(Instigator, RelevantValues);
+	if (AbilityToLaunch)
+	{
+		AbilityToLaunch->TriggerAbility(Instigator, RelevantValues, Target);
+	}
+	else
+	{
+		UE_LOG(AbilitySystemWarning, Warning, TEXT("An ability was triggered by %s, but the ability was nullptr. Please make sure it is correctly set. Aborting..."), *Instigator->GetName());
+	}
 }
 
 void UAbilitySystem::PassDefaultStatSetsToEffectiveStatSets()
@@ -49,7 +56,13 @@ void UAbilitySystem::PassDefaultStatSetsToEffectiveStatSets()
 	{
 		for (int i = 0; i < StatSets.Num(); i++)
 		{
-			UAbilityStatSet* CurrentSet = StatSets[i].GetDefaultObject();
+			UAbilityStatSet* CurrentSet = NewObject<UAbilityStatSet>(StatSets[i].GetDefaultObject());
+
+			CurrentSet->StatSetName = StatSets[i].GetDefaultObject()->StatSetName;
+			for (int j = 0; j < StatSets[i].GetDefaultObject()->AbilityStatSet.Num(); j++)
+			{
+				CurrentSet->AbilityStatSet.Add(StatSets[i].GetDefaultObject()->AbilityStatSet[j]);
+			}
 
 			EffectiveSets.Insert(CurrentSet, 0);
 		}

@@ -43,5 +43,8 @@ public:
 	virtual void PostTrigger(AActor* Instigator, TArray<float>& RelevantValues, AActor* Target = nullptr);
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void OnAbilityTrigger(AActor* Instigator);
+	void OnAbilityTrigger(AActor* Instigator, AActor* Target = nullptr);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnPostAbility(AActor* Instigator, AActor* Target = nullptr);
 };

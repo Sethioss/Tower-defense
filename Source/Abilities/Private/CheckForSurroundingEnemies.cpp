@@ -2,9 +2,9 @@
 
 
 #include "CheckForSurroundingEnemies.h"
+#include "AbilityStatSet.h"
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
-#include "AbilityStatSet.h"
 #include "AbilityDebuggerActor.h"
 
 void UCheckForSurroundingEnemies::PrepareBuffers(AActor* Instigator, AActor* Target)
@@ -23,8 +23,6 @@ void UCheckForSurroundingEnemies::TriggerAbility(AActor* Instigator, TArray<floa
 	{
 		AAbilityDebuggerActor::GetInstance()->DebugSphere(FVector(RelevantValues[0], RelevantValues[1], RelevantValues[2]), InstigatorAS->RelevantStatBuffer[0].Value);
 	}
-
-	OnAbilityTrigger(Instigator);
 }
 
 void UCheckForSurroundingEnemies::PostTrigger(AActor* Instigator, TArray<float>& RelevantValues, AActor* Target)

@@ -42,8 +42,7 @@ void UAbility::DebugUsedStatsAndValues(AActor* Instigator, TArray<FAbilityStat>&
 
 void UAbility::TriggerAbility(AActor* Instigator, TArray<float>& RelevantValues, AActor* Target)
 {
-	OnAbilityTrigger(Instigator);
-
+	OnAbilityTrigger(Instigator, Target);
 	PrepareBuffers(Instigator, Target);
 
 	TArray<FAbilityStat> RelevantStats = InstigatorAS->RelevantStatBuffer;
@@ -81,4 +80,6 @@ void UAbility::PostTrigger(AActor* Instigator, TArray<float>& RelevantValues, AA
 			TargetAS->EmptyValueBuffer(TargetAS->RelevantValueBuffer);
 		}
 	}
+
+	OnPostAbility(Instigator, Target);
 }
